@@ -1,0 +1,130 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>FIRE IPTV</title>
+    <style>
+        /* Estilo do formulário */
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #000000;
+        }
+        .container {
+            max-width: 500px;
+            margin: 50px auto;
+            padding: 20px;
+            background: #202020;
+            border-radius: 8px;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+        }
+        h1 {
+            text-align: center;
+            color: #ffffff;
+        }
+        h2 {
+            text-align: center;
+            color: #00b309;
+            font-size: 15px;
+        }
+        h3 {
+            text-align: center;
+            color: #e02302;
+            font-size: 9px;
+            letter-spacing: 1px;
+        }
+        form {
+            display: flex;
+            flex-direction: column;
+            color: #ffffff;
+        }
+        label {
+            margin: 10px 0 5px;
+            font-weight: bold;
+        }
+        input, select, button {
+            padding: 10px;
+            margin-bottom: 15px;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+            font-size: 16px;
+        }
+        button {
+            background: #00b309;
+            color: #fff;
+            cursor: pointer;
+            border: none;
+            transition: background 0.3s;
+        }
+        button:hover {
+            background: #00b309;
+        }
+        .subscription {
+            text-align: center;
+            margin-top: 20px;
+            color: #00b309;
+        }
+        .subscription a {
+            color: #00b309;
+            text-decoration: none;
+            font-weight: bold;
+        }
+        .subscription a:hover {
+            text-decoration: underline;
+        }
+    </style>
+    <script src="https://apis.google.com/js/api.js"></script>
+</head>
+<body>
+    <div class="container">
+        <h1>FIRE IPTV</h1>
+        <h2>Teste agora o melhor IPTV do mercado</h2>
+        <h3>* TESTES LIMITADOS A 1 USUARIO POR CPF *</h3>
+        <form id="testForm">
+            <label for="name">Nome:</label>
+            <input type="text" id="name" name="name" placeholder="Seu nome completo" required>
+
+            <label for="email">Email:</label>
+            <input type="email" id="email" name="email" placeholder="Seu email" required>
+
+            <label for="phone">Whatsapp:</label>
+            <input type="tel" id="phone" name="phone" placeholder="Seu melhor Whatsapp" required maxlength="16">
+
+            <label for="device">Dispositivo:</label>
+            <select id="device" name="device" required>
+                <option value="">Selecione seu dispositivo</option>
+                <option value="smart_tv">TVBox</option>
+                <option value="celular">Celular</option>
+                <option value="computador">SmartTV</option>
+                <option value="outro">Outro</option>
+            </select>
+
+            <button type="submit">Solicitar Teste</button>
+        </form>
+
+         <div class="subscription">
+            <p>Gostou do serviço? <a href="https://api.whatsapp.com/send?phone=5533998800518&text=Ol%C3%A1%2C+gostaria+de+assinar+o+IPTV%2C+meu+nome+%C3%A9..." target="_blank">Assine agora</a></p>
+        </div>
+    
+    </div>
+
+    <script>
+        // Função para formatar o telefone enquanto o usuário digita
+        document.getElementById('phone').addEventListener('input', function(event) {
+            let phone = event.target.value.replace(/\D/g, ''); // Remove tudo que não é número
+
+            if (phone.length > 2) {
+                phone = '(' + phone.substring(0, 2) + ') ' + phone.substring(2, 3) + ' ' + phone.substring(3, 7) + '-' + phone.substring(7, 11);
+            } else if (phone.length > 1) {
+                phone = '(' + phone.substring(0, 2) + ') ' + phone.substring(2);
+            }
+
+            event.target.value = phone.substring(0, 16); // Limita a 16 caracteres (correspondendo ao formato)
+        });
+
+        
+    </script>
+</body>
+</html>
