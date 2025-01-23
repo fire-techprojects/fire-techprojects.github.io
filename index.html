@@ -1,0 +1,214 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>FIRE IPTV</title>
+    <style>
+        /* Estilo do formulário */
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #000000;
+        }
+        .container {
+            max-width: 500px;
+            margin: 50px auto;
+            padding: 20px;
+            background: #202020;
+            border-radius: 8px;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+        }
+        h1 {
+            text-align: center;
+            color: #ffffff;
+        }
+        h2 {
+            text-align: center;
+            color: #00b309;
+            font-size: 15px;
+        }
+        h3 {
+            text-align: center;
+            color: #e02302;
+            font-size: 9px;
+            letter-spacing: 1px;
+        }
+        form {
+            display: flex;
+            flex-direction: column;
+            color: #ffffff;
+        }
+        label {
+            margin: 10px 0 5px;
+            font-weight: bold;
+        }
+        input, select, button {
+            padding: 10px;
+            margin-bottom: 15px;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+            font-size: 16px;
+        }
+        button {
+            background: #00b309;
+            color: #fff;
+            cursor: pointer;
+            border: none;
+            transition: background 0.3s;
+        }
+        button:hover {
+            background: #00b309;
+        }
+        .subscription {
+            text-align: center;
+            margin-top: 20px;
+            color: #00b309;
+        }
+        .subscription a {
+            color: #00b309;
+            text-decoration: none;
+            font-weight: bold;
+        }
+        .subscription a:hover {
+            text-decoration: underline;
+        }
+    </style>
+    <script src="https://apis.google.com/js/api.js"></script>
+</head>
+<body>
+    <div class="container">
+        <h1>FIRE IPTV</h1>
+        <h2>Teste agora o melhor IPTV do mercado</h2>
+        <h3>* TESTES LIMITADOS A 1 USUARIO POR CPF *</h3>
+        <form id="testForm">
+            <label for="name">Nome:</label>
+            <input type="text" id="name" name="name" placeholder="Seu nome completo" required>
+
+            <label for="email">Email:</label>
+            <input type="email" id="email" name="email" placeholder="Seu email" required>
+
+            <label for="phone">Whatsapp:</label>
+            <input type="tel" id="phone" name="phone" placeholder="Seu melhor Whatsapp" required maxlength="16">
+
+            <label for="device">Dispositivo:</label>
+            <select id="device" name="device" required>
+                <option value="">Selecione seu dispositivo</option>
+                <option value="smart_tv">TVBox</option>
+                <option value="celular">Celular</option>
+                <option value="computador">SmartTV</option>
+                <option value="outro">Outro</option>
+            </select>
+
+            <button type="submit">Solicitar Teste</button>
+        </form>
+
+        <div class="subscription">
+            <p>Gostou do serviço? <a href="https://seusite.com/assinatura" target="_blank">Assine agora</a></p>
+        </div>
+    </div>
+
+    <script>
+        // Função para formatar o telefone enquanto o usuário digita
+        document.getElementById('phone').addEventListener('input', function(event) {
+            let phone = event.target.value.replace(/\D/g, ''); // Remove tudo que não é número
+
+            if (phone.length > 2) {
+                phone = '(' + phone.substring(0, 2) + ') ' + phone.substring(2, 3) + ' ' + phone.substring(3, 7) + '-' + phone.substring(7, 11);
+            } else if (phone.length > 1) {
+                phone = '(' + phone.substring(0, 2) + ') ' + phone.substring(2);
+            }
+
+            event.target.value = phone.substring(0, 16); // Limita a 16 caracteres (correspondendo ao formato)
+        });
+
+        // Função para inicializar a API do Gmail e autenticar o usuário
+        function start() {
+            gapi.client.init({
+                'apiKey': 'AIzaSyBCnK2AIHwd5nQ_960PiaW7rjeCPLxajHs',  // Sua chave da API
+                'clientId': '800510010396-reqv58p218gn7plokidnevbkubhlt34p.apps.googleusercontent.com',
+                'scope': 'https://www.googleapis.com/auth/gmail.send',
+                'discoveryDocs': ['https://www.googleapis.com/discovery/v1/apis/gmail/v1/rest'],
+            }).then(function() {
+                const authInstance = gapi.auth2.getAuthInstance();
+                if (!authInstance.isSignedIn.get()) {
+                    authInstance.signIn().then(function() {
+                        console.log('Usuário autenticado');
+                    });
+                }
+            });
+        }
+
+        // Função para enviar o e-mail
+        function sendEmail(formData) {
+            const message = `Novo pedido de teste:\nNome: ${formData.name}\nEmail: ${formData.email}\nDispositivo: ${formData.device}\nTelefone: ${formData.phone}`;
+            
+            var email = createEmailMessage('firesolucoestecnologicas@gmail.com', 'Novo Pedido de Teste IPTV', message);
+            var request = gapi.client.gmail.users.messages.send({
+                'userId': 'me',
+                'resource': {
+                    'raw': email
+                }
+            });
+            request.execute(function(response) {
+                console.log(response);
+                if (response && response.error) {
+                    alert('Erro ao enviar o email');
+                } else {
+                    alert('Email enviado com sucesso!');
+                }
+            });
+        }
+
+        // Função para criar a mensagem de e-mail
+        function createEmailMessage(to, subject, message) {
+            var email = 'To: ' + to + '\r\n' +
+                'Subject: ' + subject + '\r\n' +
+                'Content-Type: text/plain; charset="UTF-8"\r\n' +
+                'Content-Transfer-Encoding: 7bit\r\n\r\n' +
+                message;
+            return btoa(email).replace(/\+/g, '-').replace(/\//g, '_');
+        }
+
+        // Envio do formulário
+        document.getElementById('testForm').addEventListener('submit', async function(event) {
+            event.preventDefault();
+
+            const formData = {
+                name: document.getElementById('name').value,
+                email: document.getElementById('email').value,
+                device: document.getElementById('device').value,
+                phone: document.getElementById('phone').value, 
+            };
+
+            try {
+                const response = await fetch('https://atmos.sigma.st/api/chatbot/OALyl4414w/rlKWO3Wzo7', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify(formData)
+                });
+
+                const result = await response.json();
+
+                if (response.ok) {
+                    // Enviar email após enviar o pedido
+                    sendEmail(formData);
+                    // Redirecionar para a página de agradecimento
+                    window.location.href = 'thank-you.html';
+                } else {
+                    alert('Erro ao solicitar teste: ' + result.message);
+                }
+            } catch (error) {
+                console.error('Erro:', error);
+                alert('Ocorreu um erro. Tente novamente mais tarde.');
+            }
+        });
+
+        // Carregar a API do Google quando o script for carregado
+        gapi.load('client:auth2', start);
+    </script>
+</body>
+</html>
